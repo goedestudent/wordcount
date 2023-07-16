@@ -133,10 +133,10 @@ public class WordFrequencyAnalyzerImpl implements WordFrequencyAnalyzer{
         // the runtime would be O (n + n * lg n). While they both are O(n * lg n), doing it in one run
         // will reduce the absolute runtime on very large inputs.
         BiConsumer<String, Integer> frequencyToWordFrequency = (String word, Integer frequency) -> {
-            WordFrequencyImpl impl = new WordFrequencyImpl(word, frequency);
-            int newIndex = Math.abs(Collections.binarySearch(wordFrequencies, impl, compareFrequencies)) - 1;
+            WordFrequencyImpl newWordFrequency = new WordFrequencyImpl(word, frequency);
+            int newIndex = Math.abs(Collections.binarySearch(wordFrequencies, newWordFrequency, compareFrequencies)) - 1;
             // Note: ArrayList implements RandomAccess, thus this call has a runtime of O(lg n)
-            wordFrequencies.add(newIndex, impl);
+            wordFrequencies.add(newIndex, newWordFrequency);
         };
 
         // Add frequencies from map to the list
