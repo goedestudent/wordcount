@@ -47,6 +47,12 @@ public class WordFrequencyAnalyzerImpl implements WordFrequencyAnalyzer{
         String[] words = text.split("[^A-za-z]");
         HashMap<String, Integer> frequencies = new HashMap<>();
 
+        // If the text is an empty string, the regex will see this a single (empty) word.
+        // This is unwanted behaviour, thus we return the empty map when there is no text.
+        if (text == "") {
+            return frequencies;
+        }
+
         for (String word : words) {
             frequencies.merge(word.toLowerCase(), 1, WordFrequencyAnalyzerImpl::addition);
         }
@@ -112,7 +118,8 @@ public class WordFrequencyAnalyzerImpl implements WordFrequencyAnalyzer{
         // Comparision function for frequencies.
         // Note: This comparison is the other way around, thus if the frequency of a < the frequency of b
         // 1 is returned instead of -1. This is because the list is ordered in decending order instead of
-        // ascending order. Therfore this method should not be publically available to avoid confusion.
+        // ascending order. Therefore this method should not be publically available to avoid confusion.
+        // Moreover, words with the same frequency are added in ascending order.
         Comparator<WordFrequency> compareFrequencies = (WordFrequency a, WordFrequency b) -> {
             // 'a' has lower frequency, thus should be after 'b' in the list
             if (a.getFrequency() < b.getFrequency()) {
@@ -143,6 +150,6 @@ public class WordFrequencyAnalyzerImpl implements WordFrequencyAnalyzer{
         frequencies.forEach(frequencyToWordFrequency);
 
         // Return only n of the frequencies
-        return wordFrequencies.subList(0, n);
+        return wordFrequencies.subList(0, Math.min(wordFrequencies.size(), n));
     }
 }
