@@ -18,7 +18,7 @@ public class WordFrequencyImpl implements WordFrequency{
      * @param frequency  The frequency of occurance of the associated word.
      */
     public WordFrequencyImpl(String word, int frequency) {
-        this.word = word;
+        this.word = word.toLowerCase();
         this.frequency = frequency;
     }
 
